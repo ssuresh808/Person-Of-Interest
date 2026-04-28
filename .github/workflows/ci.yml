@@ -36,24 +36,19 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
           cache: pip
-      - name: Install (CPU-only)
+      - name: Install dependencies
         run: |
-          # CI does not have a GPU. Install CPU torch + faiss-cpu so the
-          # test suite runs without trying to compile against CUDA.
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install faiss-cpu
-          # Editable install pulls in the rest from pyproject.toml. The
-          # platform marker on faiss-gpu means only faiss-cpu is installed
-          # on macOS-like runners; on Linux we already installed faiss-cpu
-          # above, which satisfies the constraint.
           pip install -e ".[dev]"
-      - name: Run tests (excluding GPU-marked)
+          python -c "import poi; import poi.data; import poi.embeddings; import poi.index; print('package imports OK')"
+      - name: Run tests
         run: pytest -m "not gpu and not integration" --no-cov -v
 
   type-check:
     name: Type check (mypy)
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -62,11 +57,8 @@ jobs:
           cache: pip
       - name: Install
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
           pip install torch --index-url https://download.pytorch.org/whl/cpu
-          pip install faiss-cpu
           pip install -e ".[dev]"
       - name: mypy
         run: mypy src/poi
-        # mypy is informational here — strict mode isn't on yet.
-        continue-on-error: true

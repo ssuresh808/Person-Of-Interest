@@ -142,7 +142,7 @@ class HashEncoder(Encoder):
         """Look up the attribute row for each image and sum its positive-attribute basis vectors."""
         out = np.zeros((len(images), self._dim), dtype=np.float32)
         for i, item in enumerate(images):
-            if isinstance(item, (str, Path)):
+            if isinstance(item, str | Path):
                 filename = Path(item).name
             else:
                 # PIL image — try the filename hint; otherwise return zero vector
