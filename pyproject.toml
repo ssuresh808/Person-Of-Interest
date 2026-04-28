@@ -73,10 +73,12 @@ poi-serve = "poi.ui.app:main"
 Repository = "https://github.com/yourusername/person-of-interest"
 Issues = "https://github.com/yourusername/person-of-interest/issues"
 
+[tool.setuptools]
+package-dir = {"" = "src"}
+
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["poi*"]
-namespaces = false
+include = ["poi", "poi.*"]
 
 [tool.ruff]
 line-length = 100
