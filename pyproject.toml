@@ -75,6 +75,8 @@ Issues = "https://github.com/yourusername/person-of-interest/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+include = ["poi*"]
+namespaces = false
 
 [tool.ruff]
 line-length = 100
