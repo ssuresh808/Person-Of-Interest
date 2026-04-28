@@ -31,8 +31,7 @@ dependencies = [
     "sentencepiece>=0.2.0",
     "pillow>=10.4.0",
     # Index
-    "faiss-cpu>=1.8.0; platform_system != 'Linux'",
-    "faiss-gpu>=1.7.2; platform_system == 'Linux'",
+    "faiss-cpu>=1.8.0",
     "numpy>=1.26.0,<2.2.0",
     # Data
     "pandas>=2.2.0",
