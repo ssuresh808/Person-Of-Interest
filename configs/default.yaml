@@ -1,0 +1,37 @@
+# Default configuration: SigLIP-2 base + IVF-Flat + Qwen2.5-VL-7B
+# This is the "fast and good" preset. See configs/ for variants.
+
+embedding:
+  backend: siglip2
+  model_name: google/siglip2-base-patch16-256
+  image_size: 256
+  batch_size: 64
+  normalize: true
+
+index:
+  index_type: ivf_flat
+  nlist: 256       # ~4*sqrt(200k) ≈ 1788, but 256 is fast and recall is fine for this task
+  nprobe: 8        # search 8 of 256 cells; ~99% recall vs flat at 5x speed
+  metric: ip       # inner product (cosine when vectors are normalized)
+  use_gpu: true
+
+vlm:
+  enabled: true
+  model_name: Qwen/Qwen2.5-VL-7B-Instruct
+  max_new_tokens: 96
+  temperature: 0.2
+  prompt_template: vlm/prompts/explain_match.txt
+
+retrieval:
+  top_k: 12
+  rerank_top_k: null
+  min_score: 0.0   # filter is for production; eval should keep everything
+
+data:
+  dataset: celeba
+  images_dir: data/celeba/img_align_celeba
+  attributes_csv: data/celeba/list_attr_celeba.csv
+  eval_split_csv: data/celeba/list_eval_partition.csv
+
+artifacts_dir: artifacts
+seed: 42

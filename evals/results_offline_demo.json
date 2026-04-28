@@ -1,0 +1,23 @@
+{
+  "encoder": "hash-encoder",
+  "encoder_dim": 512,
+  "index_type": "flat",
+  "n_corpus": 500,
+  "metrics": {
+    "n_queries": 57,
+    "skipped": 0,
+    "recall": {
+      "recall@1": 0.47368421052631576,
+      "recall@5": 0.8771929824561403,
+      "recall@10": 0.9649122807017544,
+      "recall@50": 1.0
+    },
+    "mean_reciprocal_rank": 0.6496553884711779,
+    "latency_ms": {
+      "mean": 0.34339147368443756,
+      "p50": 0.3215440000019498,
+      "p95": 0.4499245999994627,
+      "p99": 0.5356444000068447
+    }
+  }
+}

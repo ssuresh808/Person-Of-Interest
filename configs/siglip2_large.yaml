@@ -1,0 +1,38 @@
+# Higher-quality preset: SigLIP-2 large.
+# ~3x slower than base, ~7-point Recall@1 improvement on the eval set.
+# Needs ~6 GB VRAM for the encoder alone — fits any cluster shard.
+
+embedding:
+  backend: siglip2
+  model_name: google/siglip2-large-patch16-256
+  image_size: 256
+  batch_size: 32
+  normalize: true
+
+index:
+  index_type: ivf_flat
+  nlist: 256
+  nprobe: 8
+  metric: ip
+  use_gpu: true
+
+vlm:
+  enabled: true
+  model_name: Qwen/Qwen2.5-VL-7B-Instruct
+  max_new_tokens: 96
+  temperature: 0.2
+  prompt_template: vlm/prompts/explain_match.txt
+
+retrieval:
+  top_k: 12
+  rerank_top_k: null
+  min_score: 0.0
+
+data:
+  dataset: celeba
+  images_dir: data/celeba/img_align_celeba
+  attributes_csv: data/celeba/list_attr_celeba.csv
+  eval_split_csv: data/celeba/list_eval_partition.csv
+
+artifacts_dir: artifacts
+seed: 42

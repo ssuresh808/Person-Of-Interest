@@ -1,0 +1,82 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Project artifacts (large, regenerable)
+data/
+artifacts/
+*.index
+*.faiss
+*.npy
+*.pt
+*.bin
+*.safetensors
+checkpoints/
+runs/
+wandb/
+
+# Logs
+logs/
+*.log
+
+# Environment
+.env
+.env.local
+
+# OS
+Thumbs.db
+
+# CelebA-specific (downloaded data, regenerable)
+img_align_celeba/
+list_attr_celeba.csv
+list_eval_partition.csv
+
+# SLURM
+slurm-*.out
+*.sbatch.bak

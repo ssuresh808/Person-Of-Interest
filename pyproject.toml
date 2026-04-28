@@ -1,0 +1,132 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "person-of-interest"
+version = "0.1.0"
+description = "Multimodal face retrieval with vision-language reasoning"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [{ name = "Person of Interest contributors" }]
+keywords = ["multimodal", "retrieval", "embeddings", "vision-language", "faiss", "siglip"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+dependencies = [
+    # Core ML
+    "torch>=2.4.0,<2.6.0",
+    "torchvision>=0.19.0,<0.21.0",
+    "transformers>=4.45.0,<4.50.0",
+    "accelerate>=0.34.0",
+    "safetensors>=0.4.5",
+    # Embedding / VLM
+    "sentencepiece>=0.2.0",
+    "pillow>=10.4.0",
+    # Index
+    "faiss-cpu>=1.8.0; platform_system != 'Linux'",
+    "faiss-gpu>=1.7.2; platform_system == 'Linux'",
+    "numpy>=1.26.0,<2.2.0",
+    # Data
+    "pandas>=2.2.0",
+    "pyarrow>=17.0.0",
+    "kaggle>=1.6.17",
+    # UI
+    "nicegui>=2.0.0",
+    # Utilities
+    "pydantic>=2.9.0",
+    "pyyaml>=6.0.2",
+    "tqdm>=4.66.5",
+    "rich>=13.8.0",
+    "loguru>=0.7.2",
+    "python-dotenv>=1.0.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.0",
+    "pytest-cov>=5.0.0",
+    "pytest-mock>=3.14.0",
+    "ruff>=0.6.0",
+    "mypy>=1.11.0",
+    "pre-commit>=3.8.0",
+    "ipykernel>=6.29.0",
+    "jupyter>=1.1.0",
+    "matplotlib>=3.9.0",
+    "seaborn>=0.13.0",
+]
+eval = [
+    "scikit-learn>=1.5.0",
+    "scipy>=1.14.0",
+]
+
+[project.scripts]
+poi-serve = "poi.ui.app:main"
+
+[project.urls]
+Repository = "https://github.com/yourusername/person-of-interest"
+Issues = "https://github.com/yourusername/person-of-interest/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # pyflakes
+    "I",   # isort
+    "B",   # flake8-bugbear
+    "C4",  # flake8-comprehensions
+    "UP",  # pyupgrade
+    "N",   # pep8-naming
+    "SIM", # flake8-simplify
+    "RUF", # Ruff-specific
+]
+ignore = [
+    "E501",  # line too long (handled by formatter)
+    "N812",  # lowercase imported as non-lowercase
+    "SIM105", # try/except/pass — keep explicit when documenting why
+    "SIM108", # ternary instead of if/else — readability call, not always a win
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["N802", "N803"]
+"notebooks/*" = ["E402", "F401"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+disallow_incomplete_defs = true
+check_untyped_defs = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = [
+    "-v",
+    "--strict-markers",
+    "--tb=short",
+    "--cov=poi",
+    "--cov-report=term-missing",
+]
+markers = [
+    "slow: marks tests as slow (skip with '-m \"not slow\"')",
+    "gpu: requires a CUDA device",
+    "integration: end-to-end tests that need real models",
+]
