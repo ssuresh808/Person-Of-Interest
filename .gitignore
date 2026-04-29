@@ -49,7 +49,7 @@ htmlcov/
 *.ipynb_checkpoints
 
 # Project artifacts (large, regenerable)
-data/
+/data/
 artifacts/
 *.index
 *.faiss
