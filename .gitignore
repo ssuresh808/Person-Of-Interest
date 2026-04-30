@@ -3,23 +3,11 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
 *.egg
-MANIFEST
+*.egg-info/
+build/
+dist/
+.eggs/
 
 # Virtual environments
 .venv/
@@ -27,18 +15,10 @@ venv/
 env/
 ENV/
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-.DS_Store
-
-# Testing
-.pytest_cache/
+# Pytest / coverage
 .coverage
 .coverage.*
+.pytest_cache/
 htmlcov/
 .tox/
 .mypy_cache/
@@ -46,11 +26,10 @@ htmlcov/
 
 # Jupyter
 .ipynb_checkpoints/
-*.ipynb_checkpoints
 
 # Project artifacts (large, regenerable)
 /data/
-artifacts/
+/artifacts/
 *.index
 *.faiss
 *.npy
@@ -69,7 +48,13 @@ logs/
 .env
 .env.local
 
+# IDE
+.vscode/
+.idea/
+*.swp
+
 # OS
+.DS_Store
 Thumbs.db
 
 # CelebA-specific (downloaded data, regenerable)
