@@ -13,9 +13,9 @@
 
 ## What this is
 
-You describe someone in natural language — "a woman with curly dark hair, glasses, and a thoughtful expression" — and the system retrieves the closest matches from a face corpus. A vision-language model (Qwen2.5-VL) then captions each match in context of your query, so you can see *why* the system thinks each face fits.
+You describe someone in natural language "a woman with curly dark hair, glasses, and a thoughtful expression" and the system retrieves the closest matches from a face corpus. A vision-language model (Qwen2.5-VL) then captions each match in context of your query, so you can see *why* the system thinks each face fits.
 
-The corpus this is designed for is CelebA (~200k images). The system has been demonstrated end-to-end on a 500-image synthetic corpus that mirrors CelebA's attribute structure — enough to validate the architecture, the index, the retrieval logic, and the eval harness. The next step is the real-model run on full CelebA.
+The corpus this is designed for is CelebA (~200k images). The system has been demonstrated end-to-end on a 500-image synthetic corpus that mirrors CelebA's attribute structure enough to validate the architecture, the index, the retrieval logic, and the eval harness. The next step is the real-model run on full CelebA.
 
 This is the geometry of meaning made tangible: text and faces inhabit a shared embedding space, and similarity in that space is similarity of meaning.
 
@@ -25,7 +25,7 @@ This is the geometry of meaning made tangible: text and faces inhabit a shared e
 
 Most face-recognition demos do identity matching: "is this the same person?" That's a closed-world problem with a known gallery and known identities.
 
-This project does something different and harder: **describe-then-retrieve over an open corpus**. The query has no fixed schema. The matches are not guaranteed to exist. The system has to operate on narrative, not on labels — the way a human witness describes someone they met at a conference.
+This project does something different and harder: **describe-then-retrieve over an open corpus**. The query has no fixed schema. The matches are not guaranteed to exist. The system has to operate on narrative, not on labels, the way a human witness describes someone they met at a conference.
 
 That mirrors how multimodal retrieval actually behaves in production: ambiguous queries, noisy corpora, no ground truth, and a generative model that has to make sense of what came back.
 
@@ -65,7 +65,7 @@ Three components, three different roles:
 
 1. **SigLIP-2** does the alignment. Text and image embeddings live on the same unit hypersphere because contrastive training put them there. Retrieval is angular proximity.
 2. **FAISS** does the search. Brute-force cosine similarity is fast on small corpora; IVF-Flat scales to the full 200k.
-3. **Qwen2.5-VL** does the reasoning. It looks at the retrieved face, reads the original query, and writes a sentence about whether they match — and where the system might have gotten it wrong.
+3. **Qwen2.5-VL** does the reasoning. It looks at the retrieved face, reads the original query, and writes a sentence about whether they match, and where the system might have gotten it wrong.
 
 The full design rationale, including why SigLIP-2 over CLIP and why a separate VLM stage, is in [ARCHITECTURE.md](ARCHITECTURE.md).
 
@@ -73,7 +73,7 @@ The full design rationale, including why SigLIP-2 over CLIP and why a separate V
 
 ### Pipeline validation (synthetic corpus)
 
-A 500-image synthetic corpus generated to mirror CelebA's attribute structure. The encoder is a deterministic hash over attribute combinations — *not* a real visual encoder. The point of this run is to confirm the wiring: query → encode → search → top-K → metrics. Real measured numbers from a verified run:
+A 500-image synthetic corpus generated to mirror CelebA's attribute structure. The encoder is a deterministic hash over attribute combinations, *not* a real visual encoder. The point of this run is to confirm the wiring: query → encode → search → top-K → metrics. Real measured numbers from a verified run:
 
 | Metric | hash-encoder, 500 synthetic images |
 |---|---|
@@ -84,7 +84,7 @@ A 500-image synthetic corpus generated to mirror CelebA's attribute structure. T
 | Mean reciprocal rank | 0.650 |
 | p95 query latency | 0.12 ms |
 
-The numbers are high because the encoder has direct access to the same attributes used to generate the queries — this is closer to a closed-loop test of the retrieval logic than a model-quality result. They prove the pipeline produces coherent output. They do not prove anything about SigLIP-2 vs CLIP — that's the next experiment.
+The numbers are high because the encoder has direct access to the same attributes used to generate the queries, this is closer to a closed-loop test of the retrieval logic than a model-quality result. They prove the pipeline produces coherent output. They do not prove anything about SigLIP-2 vs CLIP, that's the next experiment.
 
 Recall curves and latency distribution are in [`evals/figures/`](evals/figures/). Full methodology in [`evals/results.md`](evals/results.md).
 
@@ -105,7 +105,7 @@ This README will be updated with measured numbers once the run completes.
 
 Designed for the SupportVectors GPU cluster: SLURM-scheduled, mixed RTX 3090 / 4090 / 5090 / RTX PRO 6000 nodes, shared GPU shards (12–16 GB VRAM per shard) sufficient for inference. SLURM submission scripts are in [`slurm/`](slurm/).
 
-The synthetic-data validation runs in under a second on a single VM CPU — no GPU required for that path.
+The synthetic-data validation runs in under a second on a single VM CPU no GPU required for that path.
 
 ## Quick start
 
@@ -196,7 +196,7 @@ In priority order:
 1. **Run the real-model ablation.** `sbatch slurm/ablation.sbatch` on the cluster. Replaces the "next step" section above with measured CLIP vs SigLIP-2 numbers on full CelebA.
 2. **Hard-negative mining** for a fine-tune of SigLIP-2 on CelebA's attribute pairs. The gap between Recall@1 and Recall@10 will mostly be visually-similar distractors.
 3. **Re-ranking** with a cross-encoder. Bi-encoder retrieval is fast but loses fine-grained interaction; a small cross-encoder over the top-100 should add several points of Recall@1.
-4. **Query rewriting** with the VLM. Real users don't write structured descriptions — they write fragments. An LLM rewrite step before encoding consistently helps in production.
+4. **Query rewriting** with the VLM. Real users don't write structured descriptions, they write fragments. An LLM rewrite step before encoding consistently helps in production.
 5. **Late interaction** (ColBERT-style). A single vector throws away fine-grained attribute information that a multi-vector representation could preserve.
 6. **VLM-based image regeneration** of the matched person, conditioned on the original query, as a sanity check on what the system "thinks" the person looks like.
 
@@ -206,11 +206,11 @@ MIT. See [LICENSE](LICENSE).
 
 ## Acknowledgments
 
-Built as a final project for the SupportVectors LLM Bootcamp, Spring 2026. The geometric framing (concentration of measure, the hypersphere, contrastive alignment) follows the course's treatment of embeddings — see [ARCHITECTURE.md](ARCHITECTURE.md) for how the theory shows up in the code.
+Built as a final project for the SupportVectors LLM Bootcamp, Spring 2026. The geometric framing (concentration of measure, the hypersphere, contrastive alignment) follows the course's treatment of embeddings, see [ARCHITECTURE.md](ARCHITECTURE.md) for how the theory shows up in the code.
 
 Models used:
 - [SigLIP-2](https://huggingface.co/google/siglip2-base-patch16-256) (Google)
 - [Qwen2.5-VL-7B-Instruct](https://huggingface.co/Qwen/Qwen2.5-VL-7B-Instruct) (Alibaba)
 - [DeepFace](https://github.com/serengil/deepface) for baseline face embeddings
 
-Dataset: [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) (Liu et al., 2015) — used here for academic, non-commercial research as per the dataset license.
+Dataset: [CelebA](https://mmlab.ie.cuhk.edu.hk/projects/CelebA.html) (Liu et al., 2015),  used here for academic, non-commercial research as per the dataset license.
